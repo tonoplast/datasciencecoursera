@@ -25,11 +25,9 @@ library(dplyr)
 
 
 # function starts here
-
 best <- function(state, outcome){
 
   ## Read outcome data (preparation)
-  
   thisdata <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
   
   # combining outcome strings with other necessary strings to find variables
@@ -62,17 +60,17 @@ best <- function(state, outcome){
     Chosen_data <- cbind(select(thisdata,Hospital.Name, State), Picked_data)
     
     # renaming variable
-    names(Chosen_data)[names(Chosen_data)=="Picked_data"] <- "Measure"
+    names(Chosen_data)[names(Chosen_data)=="Picked_data"] <- "Rate"
     
     # Get desired output
-    Processing_data <- Chosen_data[which(Chosen_data$State == state), ]
-    agg_data <- aggregate(Hospital.Name ~ Measure, Processing_data, min)
+    Processing_data <- Chosen_data[which(Chosen_data$State == state), ] # chose State
+    NA_removed_data <- Processing_data[complete.cases(Processing_data),] # remove NA
+    sorted_data <- NA_removed_data[order(NA_removed_data$Rate,NA_removed_data$Hospital.Name), ] # sorting
     
-    merged_data <- merge(agg_data, Processing_data)
-    sorted_data <- merged_data[order(merged_data$Measure,merged_data$Hospital.Name), ] # sorting
-    output <- sorted_data[1,2] # getting first value
+    output <- sorted_data[1,1] # getting first value
   }
 
   return(output)
 
 }
+
