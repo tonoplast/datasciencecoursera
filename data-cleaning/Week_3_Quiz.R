@@ -18,15 +18,58 @@
 # 4. 153 ,236, 388
 
 
-library(dplyr)
-
+# >>>
+# download file
 Url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv"
 download.file(Url, destfile="Idaho_housing.csv", method= "curl")
 
+# read file
 Housing <- read.csv("Idaho_housing.csv")
+
+# households greater than 10 acres & sold more than $10k agricultural products
 agriculturalLogical <- Housing$ACR == 3 & Housing$AGS == 6
+
+# get top 3
 head(which(agriculturalLogical),3)
 
 # [1] 125 238 262
 # Answer: 1
+
+##################################################################################################################
+
+# Question 2
+
+# Using the jpeg package read in the following picture of your instructor into R
+# https://d396qusza40orc.cloudfront.net/getdata%2Fjeff.jpg
+# Use the parameter native=TRUE. What are the 30th and 80th quantiles of the resulting data? 
+#(some Linux systems may produce an answer 638 different for the 30th quantile)
+ 
+# 1. -16776430 -15390165
+# 2. 10904118 -594524
+# 3. -10904118 -10575416
+# 4. -15259150 -10575416
+
+# >>>
+#install.packages('jpeg')
+library(jpeg)
+
+# url and download
+Url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fjeff.jpg"
+download.file(Url, destfile="image.jpg", mode='wb')
+
+# load image
+thisimage <- readJPEG("image.jpg", native=TRUE)
+
+# get 30th and 80th quantile
+quantile(thisimage, probs = c(0.3, 0.8))
+
+#      30%       80% 
+# -15259150 -10575416 
+
+# Answer: 4
+
+##################################################################################################################
+
+
+
 
