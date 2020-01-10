@@ -33,7 +33,7 @@ agriculturalLogical <- Housing$ACR == 3 & Housing$AGS == 6
 head(which(agriculturalLogical),3)
 
 # [1] 125 238 262
-*# Answer: 1*
+# Answer: 1
 
 
 ##################################################################################################################
