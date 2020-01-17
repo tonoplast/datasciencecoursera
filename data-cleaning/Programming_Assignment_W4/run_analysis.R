@@ -91,8 +91,10 @@ rm(list=setdiff(ls(), c("final_data","activity_labels","pwd")))
 
 # look for 'mean' and 'std' in column names (ignoring case) and output table
 mean_std_idx <- grep('subj|activity|data_type|mean|std', ignore.case = TRUE, colnames(final_data))
-mean_std_data <- final_data[mean_std_idx]
+not_this <- grep('angle',ignore.case=TRUE,colnames(final_data))
 
+# removing those that has "angle" in them
+mean_std_data <- final_data[setdiff(mean_std_idx, not_this)]
 
 #############################################################################################################
 # 3. Uses descriptive activity names to name the activities in the data set
@@ -104,7 +106,7 @@ mean_std_data <- merge(mean_std_data, activity_labels, by="activity_id")
 mean_std_data <- mean_std_data %>% select(2:1, activity_type, everything())
 
 # removing 'activity_labels' data as it's no longer needed
-rm(activity_labels)
+rm(activity_labels, mean_std_idx, not_this)
 
 
 #############################################################################################################
@@ -134,5 +136,3 @@ summarised_data <- mean_std_data %>%
 # output-ing data
 setwd(pwd)
 write.table(summarised_data, file="tidy_averaged_data.txt", row.names = FALSE)
-
-
