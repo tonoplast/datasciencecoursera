@@ -1,0 +1,101 @@
+# Code Book for "Getting and Cleaning Data" course project
+
+
+## Identifiers
+
+    * subj_id - ID of the subject
+    * activity_id - ID of the activity type (a row number)
+    * activity_type - Type of activity
+    * data_type - whether it is "test" or "train" in case anyone is interested in looking at the differences
+
+## Measurements (averaged by ID and Activity type)
+
+    *	TimeBodyAccelerometer_Mean_X_1
+    *	TimeBodyAccelerometer_Mean_Y_2
+    *	TimeBodyAccelerometer_Mean_Z_3
+    *	TimeBodyAccelerometer_Std_X_4
+    *	TimeBodyAccelerometer_Std_Y_5
+    *	TimeBodyAccelerometer_Std_Z_6
+    *	TimeGravityAccelerometer_Mean_X_41
+    *	TimeGravityAccelerometer_Mean_Y_42
+    *	TimeGravityAccelerometer_Mean_Z_43
+    *	TimeGravityAccelerometer_Std_X_44
+    *	TimeGravityAccelerometer_Std_Y_45
+    *	TimeGravityAccelerometer_Std_Z_46
+    *	TimeBodyAccelerometerJerk_Mean_X_81
+    *	TimeBodyAccelerometerJerk_Mean_Y_82
+    *	TimeBodyAccelerometerJerk_Mean_Z_83
+    *	TimeBodyAccelerometerJerk_Std_X_84
+    *	TimeBodyAccelerometerJerk_Std_Y_85
+    *	TimeBodyAccelerometerJerk_Std_Z_86
+    *	TimeBodyGyroscope_Mean_X_121
+    *	TimeBodyGyroscope_Mean_Y_122
+    *	TimeBodyGyroscope_Mean_Z_123
+    *	TimeBodyGyroscope_Std_X_124
+    *	TimeBodyGyroscope_Std_Y_125
+    *	TimeBodyGyroscope_Std_Z_126
+    *	TimeBodyGyroscopeJerk_Mean_X_161
+    *	TimeBodyGyroscopeJerk_Mean_Y_162
+    *	TimeBodyGyroscopeJerk_Mean_Z_163
+    *	TimeBodyGyroscopeJerk_Std_X_164
+    *	TimeBodyGyroscopeJerk_Std_Y_165
+    *	TimeBodyGyroscopeJerk_Std_Z_166
+    *	TimeBodyAccelerometerMagnitude_Mean_201
+    *	TimeBodyAccelerometerMagnitude_Std_202
+    *	TimeGravityAccelerometerMagnitude_Mean_214
+    *	TimeGravityAccelerometerMagnitude_Std_215
+    *	TimeBodyAccelerometerJerkMagnitude_Mean_227
+    *	TimeBodyAccelerometerJerkMagnitude_Std_228
+    *	TimeBodyGyroscopeMagnitude_Mean_240
+    *	TimeBodyGyroscopeMagnitude_Std_241
+    *	TimeBodyGyroscopeJerkMagnitude_Mean_253
+    *	TimeBodyGyroscopeJerkMagnitude_Std_254
+    *	FrequencyBodyAccelerometer_Mean_X_266
+    *	FrequencyBodyAccelerometer_Mean_Y_267
+    *	FrequencyBodyAccelerometer_Mean_Z_268
+    *	FrequencyBodyAccelerometer_Std_X_269
+    *	FrequencyBodyAccelerometer_Std_Y_270
+    *	FrequencyBodyAccelerometer_Std_Z_271
+    *	FrequencyBodyAccelerometer_MeanFreq_X_294
+    *	FrequencyBodyAccelerometer_MeanFreq_Y_295
+    *	FrequencyBodyAccelerometer_MeanFreq_Z_296
+    *	FrequencyBodyAccelerometerJerk_Mean_X_345
+    *	FrequencyBodyAccelerometerJerk_Mean_Y_346
+    *	FrequencyBodyAccelerometerJerk_Mean_Z_347
+    *	FrequencyBodyAccelerometerJerk_Std_X_348
+    *	FrequencyBodyAccelerometerJerk_Std_Y_349
+    *	FrequencyBodyAccelerometerJerk_Std_Z_350
+    *	FrequencyBodyAccelerometerJerk_MeanFreq_X_373
+    *	FrequencyBodyAccelerometerJerk_MeanFreq_Y_374
+    *	FrequencyBodyAccelerometerJerk_MeanFreq_Z_375
+    *	FrequencyBodyGyroscope_Mean_X_424
+    *	FrequencyBodyGyroscope_Mean_Y_425
+    *	FrequencyBodyGyroscope_Mean_Z_426
+    *	FrequencyBodyGyroscope_Std_X_427
+    *	FrequencyBodyGyroscope_Std_Y_428
+    *	FrequencyBodyGyroscope_Std_Z_429
+    *	FrequencyBodyGyroscope_MeanFreq_X_452
+    *	FrequencyBodyGyroscope_MeanFreq_Y_453
+    *	FrequencyBodyGyroscope_MeanFreq_Z_454
+    *	FrequencyBodyAccelerometerMagnitude_Mean_503
+    *	FrequencyBodyAccelerometerMagnitude_Std_504
+    *	FrequencyBodyAccelerometerMagnitude_MeanFreq_513
+    *	FrequencyBodyBodyAccelerometerJerkMagnitude_Mean_516
+    *	FrequencyBodyBodyAccelerometerJerkMagnitude_Std_517
+    *	FrequencyBodyBodyAccelerometerJerkMagnitude_MeanFreq_526
+    *	FrequencyBodyBodyGyroscopeMagnitude_Mean_529
+    *	FrequencyBodyBodyGyroscopeMagnitude_Std_530
+    *	FrequencyBodyBodyGyroscopeMagnitude_MeanFreq_539
+    *	FrequencyBodyBodyGyroscopeJerkMagnitude_Mean_542
+    *	FrequencyBodyBodyGyroscopeJerkMagnitude_Std_543
+    *	FrequencyBodyBodyGyroscopeJerkMagnitude_MeanFreq_552
+
+## Activity Labels
+
+    * WALKING
+    * WALKING_UPSTAIRS
+    * WALKING_DOWNSTAIRS
+    * SITTING
+    * STANDING
+    * LAYING
+
