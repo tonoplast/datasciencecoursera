@@ -1,0 +1,151 @@
+---
+title: "Exploring the U.S. National Oceanic and Atmospheric Administration's (NOAA) storm database"
+output: html_document
+keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Synopsis
+The basic goal of this assignment is to explore the NOAA Storm Database and answer some basic questions about severe weather events. The data were summarised based on natural weather event types, and each catergory was summed to produce the results. It was found that the tornado caused the highest population damage, while flood caused the most economic damage.
+
+
+## Introduction
+Storms and other severe weather events can cause both public health and economic problems for communities and municipalities. Many severe events can result in fatalities, injuries, and property damage, and preventing such outcomes to the extent possible is a key concern.
+
+This project involves exploring the U.S. National Oceanic and Atmospheric Administration's (NOAA) storm database. This database tracks characteristics of major storms and weather events in the United States, including when and where they occur, as well as estimates of any fatalities, injuries, and property damage.
+
+
+## Data
+The data for this assignment come in the form of a comma-separated-value file compressed via the bzip2 algorithm to reduce its size. You can download the file from the course web site:
+
+* [Storm Data](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2) [47Mb]
+
+There is also some documentation of the database available. Here you will find how some of the variables are constructed/defined.
+
+1. National Weather Service [Storm Data Documentation](https://d396qusza40orc.cloudfront.net/repstormData%2Fpeer2_doc%2Fpd01016005curr.pdf)
+2. National Climatic Data Center Storm Events [FAQ] (https://d396qusza40orc.cloudfront.net/repstormData%2Fpeer2_doc%2FNCDC%20Storm%20Events-FAQ%20Page.pdf)
+
+The events in the database start in the year 1950 and end in November 2011. In the earlier years of the database there are generally fewer events recorded, most likely due to a lack of good records. More recent years should be considered more complete.
+
+
+
+## Data Processing
+
+Clear work space and Load packages
+```{r}
+rm(list=ls())
+
+library(dplyr)
+library(ggplot2)
+library(stringr)
+library(lubridate)
+library(tidyr)
+```
+
+Download and read data
+```{r}
+this_file <- "storm_data.csv.bz2"
+this_Url <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
+
+# download if does not exist
+if (!file.exists("storm_data.csv.bz2")) {
+download.file(this_Url, this_file, method= 'curl')
+}
+
+storm_data <- read.csv(this_file, header = TRUE, stringsAsFactors = FALSE)
+```
+
+
+Subsetting data and converting units into numbers
+```{r}
+
+# mapping for units
+PROPDMGEXP_unique <- sort(unique(storm_data$PROPDMGEXP))
+PROPDMGEXP_map <- c(1, 1, 1, 1, 1, 1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1, 1e2, 1e3, 1e6, 1e6)
+
+CROPDMGEXP_unique <- sort(unique(storm_data$CROPDMGEXP))
+CROPDMGEXP_map <- c(1, 1, 1, 1e2, 1e9, 1e3, 1e3, 1e6, 1e6)
+
+# subset and convert into numbers
+storm_data_subset <- storm_data %>%
+  select(c('EVTYPE','FATALITIES','INJURIES', 'PROPDMG', 'PROPDMGEXP', 'CROPDMG', 'CROPDMGEXP')) %>%
+  mutate(EVTYPE = str_trim(EVTYPE, side = "both")) %>%
+  mutate(PROPDMGEXP_NUM = plyr::mapvalues(PROPDMGEXP, PROPDMGEXP_unique, PROPDMGEXP_map),
+         CROPDMGEXP_NUM = plyr::mapvalues(CROPDMGEXP, CROPDMGEXP_unique, CROPDMGEXP_map)) %>%
+  
+  mutate(PROPDMG = PROPDMG * as.numeric(PROPDMGEXP_NUM),
+         CROPDMG = CROPDMG * as.numeric(CROPDMGEXP_NUM),
+         
+         TOTAL_DAMAGE = PROPDMG + CROPDMG) %>%
+  
+  mutate(TOTAL_DAMAGE_PERSON = FATALITIES + INJURIES) %>%
+  
+  select(-c('PROPDMGEXP', 'CROPDMGEXP', 'PROPDMGEXP_NUM', 'CROPDMGEXP_NUM'))
+  
+```
+
+
+## Results
+
+### Most harmful event types to population health (total)
+
+1. Across the United States, which types of events (as indicated in the \color{red}{\verb|EVTYPE|}EVTYPE variable) are most harmful with respect to population health?
+
+Summarising events affecting population health (top 10 combined Fatilities and Injuries)
+```{r}
+health_damage <- storm_data_subset %>%
+  select(EVTYPE, TOTAL_DAMAGE_PERSON) %>%
+  group_by(EVTYPE) %>%
+  summarise(sum = sum(TOTAL_DAMAGE_PERSON)) %>%
+  arrange(desc(sum)) %>%
+  head(10)
+  
+
+# top 10 events
+print(health_damage)
+
+# plotting
+  
+ggplot(health_damage, aes(x = reorder(EVTYPE, -sum), y = sum)) +
+  geom_bar(stat = 'identity') +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = "Number of total population damage (Fatilities & Injuries) by \n top 10 weather events",
+         x = "Event Type", y = "Number of People") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+Tornado had the biggest effect on population health.
+
+
+### Most harmful event types to economic health (total)
+
+2. Across the United States, which types of events have the greatest economic consequences?
+
+Summarising events affecting economy (top 10 combined Properties and Crops)
+```{r}
+economic_damage <- storm_data_subset %>%
+  select(EVTYPE, TOTAL_DAMAGE) %>%
+  group_by(EVTYPE) %>%
+  summarise(sum = sum(TOTAL_DAMAGE)) %>%
+  arrange(desc(sum)) %>%
+  head(10)
+  
+
+# top 10 events
+print(economic_damage)
+
+# plotting
+  
+ggplot(economic_damage, aes(x = reorder(EVTYPE, -sum), y = sum)) +
+  geom_bar(stat = 'identity') +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = "Number of total economic damage (Properties & Crops) by \n top 10 weather events",
+         x = "Event Type", y = "Damage in Dollars ($)") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+```
+
+Flood had the biggest impact on the economy.
+
